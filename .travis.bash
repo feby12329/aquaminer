@@ -20,6 +20,9 @@ file aquachain-miner*
 file aquachain-miner/*
 aquachain-miner/aquachain-miner-*plain -h
 
+# make sure it can hash without illegal instruction
+#aquachain-miner/aquachain-miner-*plain -B -v
+
 #mkdir build && cd build && cmake .. && make -j8 && file aquachain-miner*
 
 
