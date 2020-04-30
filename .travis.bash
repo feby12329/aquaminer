@@ -14,7 +14,7 @@ bash ./scripts/setup_libs.bash
 make deps
 
 # build 3 binaries (plain, avx, avx2)
-bash ./scripts/build_release.sh
+bash ./scripts/build_release.bash
 
 file aquachain-miner*
 file aquachain-miner/*
