@@ -5,8 +5,12 @@ VERSION := "dev"
 endif
 VERSION := $(shell cat VERSION)-$(VERSION)
 WD := $(PWD)
-# path to curl lib (has ./bin/curl-config and ./lib/libcurl.a)
-CURLDIR?=/tmp/curl
+
+# CURLDIR is the path to curl lib 
+# (it has ./bin/curl-config and ./lib/libcurl.a)
+# if depends/curl is used, it will be fetched and compiled
+CURLDIR?=depends/curl
+
 CXXFLAGS := -O3 -std=c++11 -pedantic -Wall -Werror -Iinclude -I. -Iaquahash/include -Ispdlog/include -I${CURLDIR}/include -pthread -static -DVERSION=\""$(VERSION)"\"
 CFLAGS += -O3
 SRCDIR := src
@@ -88,8 +92,8 @@ distclean:
 	rm -rvf /tmp/curl
 
 
-/tmp/curl:
-	bash setup_libs.bash
+depends/curl:
+	bash scripts/setup_libs.bash
 
 debug:
 	$(MAKE) config=debug

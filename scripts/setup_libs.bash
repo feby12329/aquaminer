@@ -9,25 +9,26 @@ get_curl(){
   cd deps && wget -O libcurl.tar.gz https://curl.haxx.se/download/curl-7.69.1.tar.gz && \
   tar xaf libcurl.tar.gz
 }
+
 build_curl(){
-if [ -d /tmp/curl ]; then
-  rm -rf /tmp/curl
+if [ -d depends/curl ]; then
+  rm -rf depends/curl
 fi
 # curl config ultralite (no ssl)
 cd ${WD}/deps/curl-7.69.1 && \
-./configure --disable-shared --enable-static --prefix=/tmp/curl --disable-ldap --disable-gopher --disable-ftp --disable-pop3 --disable-imap --disable-rtsp --disable-smtp --disable-telnet --disable-tftp --without-ssl --disable-dict --disable-file --without-nghttp2 --enable-ares --disable-netrc
+  ./configure --disable-shared --enable-static --prefix=$CURLDIR --disable-ldap --disable-gopher --disable-ftp --disable-pop3 --disable-imap --disable-rtsp --disable-smtp --disable-telnet --disable-tftp --without-ssl --disable-dict --disable-file --without-nghttp2 --enable-ares --disable-netrc
 make -j 4
-make install # installs to /tmp/curl
+make install # installs to CURLDIR
 }
 
 
-if [ ! -d /tmp/curl ]; then
+if [ ! -d "$CURLDIR" ]; then
   echo "Fetching curl"
   get_curl
   echo "Building curl"
   time build_curl
 else
-  echo "libcurl exists at /tmp/curl, if this is a mistake remove it and re-run this script"
+  echo "libcurl exists at \"$CURLDIR\", if this is a mistake remove it and re-run this script"
 fi
 
 pkg-config --exists jsoncpp || echo "Please install libjsoncpp-dev"
