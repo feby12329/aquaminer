@@ -8,13 +8,13 @@ cat /etc/os-release
 sudo apt install -y wget tree file 
 
 # build curl lite
-bash setup_libs.bash
+bash ./scripts/setup_libs.bash
 
 # build spdlog 
 make deps
 
 # build 3 binaries (plain, avx, avx2)
-./build_release.sh
+bash ./scripts/build_release.sh
 
 file aquachain-miner*
 file aquachain-miner/*
