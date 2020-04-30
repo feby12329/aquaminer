@@ -1,4 +1,8 @@
 set -e
+CURLDIR=$CURLDIR
+if [ -z "$CURLDIR" ]; then
+  CURLDIR=$PWD/depends/libcurl
+fi
 WD=`pwd`
 # lets build aquachain-miner (static linked for greatest portability)
 get_curl(){
@@ -11,8 +15,8 @@ get_curl(){
 }
 
 build_curl(){
-if [ -d depends/curl ]; then
-  rm -rf depends/curl
+if [ -d "$CURLDIR" ]; then
+  rm -rf "$CURLDIR"
 fi
 # curl config ultralite (no ssl)
 cd ${WD}/deps/curl-7.69.1 && \

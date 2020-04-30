@@ -9,7 +9,7 @@ WD := $(PWD)
 # CURLDIR is the path to curl lib 
 # (it has ./bin/curl-config and ./lib/libcurl.a)
 # if depends/curl is used, it will be fetched and compiled
-CURLDIR?=depends/curl
+CURLDIR?=depends/libcurl
 
 CXXFLAGS := -O3 -std=c++11 -pedantic -Wall -Werror -Iinclude -I. -Iaquahash/include -Ispdlog/include -I${CURLDIR}/include -pthread -static -DVERSION=\""$(VERSION)"\"
 CFLAGS += -O3
