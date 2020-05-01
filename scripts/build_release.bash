@@ -3,8 +3,8 @@ mkdir aquachain-miner # should not exist
 # clean everything
 cleanall(){
   make clean
-  make -C aquahash clean
-  make -C spdlog clean
+  make -C aquahash clean || true
+  make -C spdlog clean || true
 }
 
 # build each, copy to folder and clean afterwards

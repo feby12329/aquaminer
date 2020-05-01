@@ -80,7 +80,8 @@ aquahash:
 
 spdlog/libspdlog.a: spdlog
 	$(info building libspdlog.a)
-	cd spdlog && cmake . && make -j2 spdlog CXXFLAGS=$(CFLAGS)
+	cd spdlog && cmake . && make -j2 spdlog CXXFLAGS="$(CFLAGS)"
+	cd ${WD} && ls -all spdlog/libspdlog.a
 
 spdlog: 
 	wget -O spdlog.zip https://github.com/gabime/spdlog/archive/v1.5.0.zip
