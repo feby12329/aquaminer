@@ -24,3 +24,10 @@ aquachain-miner/aquachain-miner-*plain -h
 #mkdir build && cd build && cmake .. && make -j8 && file aquachain-miner*
 
 
+mv aquachain-miner-linux-amd64.tar.gz aquachain-miner-ubuntu-amd64.tar.gz
+mkdir /tmp/debian
+git clone . /tmp/debian
+
+docker run -v $TRAVIS_BUILD_DIR:/release/ -v /tmp/debian:/src debian:stable bash /release/scripts/docker-run.bash
+
+mv aquachain-miner-linux-amd64.tar.gz aquachain-miner-debian-amd64.tar.gz
