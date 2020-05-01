@@ -62,7 +62,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(STATICLIBS) $(CURLDIR)
 
 aquahash/libaquahash.a: aquahash
 	$(info building aquahash: $(CFLAGS))
-	env CFLAGS="$(CFLAGS) -DARGON2_NO_THREADS -DARGON2_NO_SECURE_WIPE" $(MAKE) -C aquahash libaquahash.a
+	env CFLAGS="$(CFLAGS) -DARGON2_NO_THREADS -DARGON2_NO_SECURE_WIPE" \
+	  OPTTARGET=0 $(MAKE) -C aquahash libaquahash.a
 
 include/cli11/CLI11.hpp:
 	$(info fetching CLI11 header)
