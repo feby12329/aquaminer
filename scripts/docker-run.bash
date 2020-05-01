@@ -2,6 +2,7 @@
 set -ex
 uname -a
 cat /etc/os-release
+cd /src
 # kind of not important anymore
 #sudo apt remove libssl-dev -y
 #sudo apt install curl ca-certificates wget tree -y
@@ -9,12 +10,12 @@ apt update
 apt install -y sudo git libjsoncpp-dev zlib1g-dev build-essential wget unzip cmake libc-ares-dev libgmp-dev file tree
 sudo apt install -y wget tree file 
 
-cd /release/
 # build curl lite
 bash ./scripts/setup_libs.bash
 
 
 # build 3 binaries (plain, avx, avx2)
+rm -rvf aquachain-miner/
 bash ./scripts/build_release.bash
 
 file aquachain-miner*
@@ -25,7 +26,7 @@ aquachain-miner/aquachain-miner-*plain -h
 #aquachain-miner/aquachain-miner-*plain -B -v
 
 #mkdir build && cd build && cmake .. && make -j8 && file aquachain-miner*
-mv aquachain-miner-linux-amd64.tar.gz aquachain-miner-debian-amd64.tar.gz
+mv aquachain-miner-linux-amd64.tar.gz /release/aquachain-miner-debian-amd64.tar.gz
 
 
 

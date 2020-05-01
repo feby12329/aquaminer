@@ -28,6 +28,5 @@ mv aquachain-miner-linux-amd64.tar.gz aquachain-miner-ubuntu-amd64.tar.gz
 mkdir /tmp/debian
 git clone . /tmp/debian
 
-docker run -v $TRAVIS_BUILD_DIR:/release/ -v /tmp/debian:/src debian:stable bash /release/scripts/docker-run.bash
+docker run -v $TRAVIS_BUILD_DIR:/release/ -v /tmp/debian:/src debian:stable bash /src/scripts/docker-run.bash
 
-mv aquachain-miner-linux-amd64.tar.gz aquachain-miner-debian-amd64.tar.gz
