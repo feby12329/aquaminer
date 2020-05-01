@@ -28,7 +28,7 @@ else ifeq ($(config), debug)
 CFLAGS += -ggdb
 suffix := -debug
 else
-#CFLAGS := -march=native
+CFLAGS := -mno-sse3 -mno-avx -mno-avx2
 suffix := -plain
 endif
 $(info Building: $(NAME)-$(VERSION)$(suffix))
