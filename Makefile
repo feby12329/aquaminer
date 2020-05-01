@@ -28,7 +28,7 @@ else ifeq ($(config), debug)
 CFLAGS += -ggdb
 suffix := -debug
 else
-CFLAGS := -march=native
+#CFLAGS := -march=native
 suffix := -plain
 endif
 $(info Building: $(NAME)-$(VERSION)$(suffix))
@@ -59,7 +59,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(STATICLIBS) $(CURLDIR)
 
 aquahash/libaquahash.a: aquahash
 	$(info building aquahash: $(CFLAGS))
-	env CFLAGS="$(CFLAGS)" $(MAKE) -C aquahash libaquahash.a
+	env CFLAGS="$(CFLAGS) -DARGON2_NO_THREADS -DARGON2_NO_SECURE_WIPE" $(MAKE) -C aquahash libaquahash.a
 
 include/cli11/CLI11.hpp:
 	$(info fetching CLI11 header)
@@ -77,7 +77,7 @@ aquahash:
 
 spdlog/libspdlog.a: spdlog
 	$(info building libspdlog.a)
-	cd spdlog && cmake . && make -j2 spdlog
+	cd spdlog && cmake . && make -j2 spdlog CFLAGS=$(CFLAGS)
 
 spdlog: 
 	wget -O spdlog.zip https://github.com/gabime/spdlog/archive/v1.5.0.zip
