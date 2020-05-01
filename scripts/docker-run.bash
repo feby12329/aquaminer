@@ -9,6 +9,7 @@ apt update
 apt install -y sudo git libjsoncpp-dev zlib1g-dev build-essential wget unzip cmake libc-ares-dev libgmp-dev file tree
 sudo apt install -y wget tree file 
 
+cd /release/
 # build curl lite
 bash ./scripts/setup_libs.bash
 
