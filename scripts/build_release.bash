@@ -9,13 +9,16 @@ cleanall(){
 cleanall
 
 # build each, copy to folder and clean afterwards
-make -j 4 config=plain
+make -j4 config=plain spdlog/libspdlog.a
+make -j4 config=plain
 mv bin/* aquachain-miner/
 cleanall
-make -j 4 config=avx
+make -j4 config=avx spdlog/libspdlog.a
+make -j4 config=avx
 mv bin/* aquachain-miner/
 cleanall
-make -j 4 config=avx2
+make -j4 config=avx2 spdlog/libspdlog.a
+make -j4 config=avx2
 mv bin/* aquachain-miner/
 cleanall
 
