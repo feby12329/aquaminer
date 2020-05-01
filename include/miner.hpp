@@ -68,8 +68,8 @@ class Miner {
   bool getwork();
   CURL *getworkcurl;
   CURL *submitcurl;
-  void initcurl(CURL *, int);                  // int typ defined in http.cpp
-  std::shared_ptr<spdlog::logger> logger;      // for miner
+  void initcurl(CURL *, int);  // int typ defined in http.cpp
+  //  std::shared_ptr<spdlog::logger> logger;      // for miner
   std::shared_ptr<spdlog::logger> getworklog;  // for getwork
   std::mutex workmu;
   bool getCurrentWork(WorkPacket *work_t, uint8_t thread_id) {
@@ -85,10 +85,10 @@ class Miner {
     }
     // print new work
     // TODO: move to getwork thread
-    logger->info("CPU {} new work: algo '{}' diff: {} input: {}", thread_id,
-                 currentWork->version,
-                 mpzToString(currentWork->difficulty).c_str(),
-                 std::string(currentWork->inputStr).substr(0, 8));
+    printf("[NEW WORK] CPU %d new work: algo '%c' diff: %s input: %s\n",
+           thread_id, currentWork->version,
+           mpzToString(currentWork->difficulty).c_str(),
+           std::string(currentWork->inputStr).substr(0, 8).c_str());
     work_t->version = currentWork->version;
     strcpy(work_t->inputStr, currentWork->inputStr);
     memcpy(work_t->input, currentWork->input, 32);

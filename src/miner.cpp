@@ -100,7 +100,7 @@ static void affine_to_cpu_mask(int id, unsigned long mask, int num_cpus) {
 #endif
 void Miner::minerThread(uint8_t thread_id) {
   static const bool verbose = this->verbose;
-  logger->debug("thread {} started\n", thread_id);
+  printf("thread %d started\n", thread_id);
 
 #ifdef SCHEDPOL
   sched_param sch;
@@ -127,8 +127,8 @@ void Miner::minerThread(uint8_t thread_id) {
                sch.sched_priority, policy);
 #endif
 
-  logger->info("Binding thread {} to cpu {} (mask {})", thread_id,
-               thread_id % num_cpus, (1 << ((thread_id - 1) % num_cpus)));
+  printf("Binding thread %d to cpu %d (mask %02x)", thread_id,
+         thread_id % num_cpus, (1 << ((thread_id - 1) % num_cpus)));
 
 #ifdef AFFINE
   affine_to_cpu_mask(thread_id, 1UL << ((thread_id - 1) % num_cpus), num_cpus);
@@ -157,7 +157,7 @@ void Miner::minerThread(uint8_t thread_id) {
   uint64_t reportTriesMod = static_cast<uint64_t>(thread_id + (1 * 1000));
   // starting nonce
   memcpy(&nonce_int, &work->buf[32], 8);
-  logger->info("Thread {} starting nonce: {}", thread_id, nonce_int);
+  printf("Thread %d starting nonce: %lu\n", thread_id, nonce_int);
   memcpy(&work->buf[32], &nonce_int, 8);
 
   // miner loop
@@ -239,7 +239,7 @@ void Miner::minerThread(uint8_t thread_id) {
     std::string diff = mpzToString(work->difficulty);
     std::cout << diff << std::endl;
 #endif
-    logger->info("thread {} found new solution", thread_id);
+    printf("thread %d found new solution\n", thread_id);
     // std::thread(submitwork, work, poolUrl).detach();
     if (!submitwork(work, poolUrl, verbose, this->submitcurl)) {
       std::this_thread::sleep_for(std::chrono::milliseconds(400));

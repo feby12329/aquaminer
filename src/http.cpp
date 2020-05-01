@@ -71,7 +71,6 @@ Miner::Miner(const std::string url, const uint8_t nThreads, const uint8_t nCPU,
   verbose = verboseLogs;
   benching = bench;
   this->currentWork = new WorkPacket();
-  this->logger = spdlog::stderr_color_mt("MINER");
   this->getworklog = spdlog::stderr_color_mt("GETWORK");
 
   this->getworkcurl = curl_easy_init();
@@ -122,7 +121,6 @@ void Miner::getworkThread(const char *thread_id) {
   unsigned long long totalHash = 0;
   unsigned long long numHashesSinceLast = 0;
   float fps = 0.0;
-  char fpsbuf[100];
 
   // bench mark 1M and exit
   if (benching) {
@@ -194,13 +192,12 @@ void Miner::getworkThread(const char *thread_id) {
     unsigned long long submittedValid = sharesValid;
     unsigned long long errs = errCount;
     unsigned long long rejected = submitted - submittedValid;
-    sprintf(fpsbuf, "Aquahash v%c [%04.4f kH/s] (%010llu) Valid=%llu Bad=%llu",
-            this->currentWork->version, fps / 1000.00, totalHash,
-            submittedValid, rejected);
-    this->logger->info("{}", fpsbuf);
+    printf("Aquahash v%c [%04.4f kH/s] (%010llu) Valid=%llu Bad=%llu",
+           this->currentWork->version, fps / 1000.00, totalHash, submittedValid,
+           rejected);
 
     if (errs != 0) {
-      logger->warn("Pool HTTP Errors = %lu\n", errs);
+      printf("Pool HTTP Errors = %llu\n", errs);
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(3000));
   }
@@ -226,9 +223,9 @@ void Miner::initcurl(CURL *curl, int typ) {
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS,
                      "{\"jsonrpc\":\"2.0\",\"method\":\"aqua_getWork\","
                      "\"params\":[],\"id\":42}");
-    logger->info("Initializing getwork curl handle");
+    printf("Initializing getwork curl handle\n");
   } else if (typ == SUBMITWORK) {
-    logger->info("Initializing submitwork curl handle");
+    printf("Initializing submitwork curl handle\n");
   } else {
     throw std::invalid_argument("INVALID HTTP REQUEST TYPE");
   }
@@ -308,14 +305,16 @@ bool Miner::getwork() {
   this->workmu.lock();
   // got work, copy to currentWork
   if (0 == strcmp(currentWork->inputStr, val[0].asString().c_str())) {
-    logger->debug("no new work {}", currentWork->inputStr);
+    if (verbose) {
+      printf("no new work %s", currentWork->inputStr);
+    }
     this->workmu.unlock();
     return true;
   }
 
   if (verbose) {
-    logger->debug("Got successful response from {}", poolUrl);
-    logger->debug("Successfully parsed JSON data:");
+    printf("Got successful response from %s\n", poolUrl.c_str());
+    printf("Successfully parsed JSON data:\n");
     std::cout << jsonData.toStyledString() << std::endl;
   }
 

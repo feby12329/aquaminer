@@ -15,12 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <gmp.h>             // for mpz_init
-#include <spdlog/fmt/fmt.h>  // for format_to
-#include <spdlog/logger.h>   // for logger::set_level
-#include <stdint.h>          // for uint8_t
-#include <stdio.h>           // for printf
-#include <stdlib.h>          // for malloc
+#include <gmp.h>     // for mpz_init
+#include <stdint.h>  // for uint8_t
+#include <stdio.h>   // for printf
+#include <stdlib.h>  // for malloc
 
 #include <algorithm>  // for max
 #include <memory>     // for shared_ptr, __share...
@@ -29,10 +27,6 @@
 #include <vector>     // for vector
 
 #include "miner.hpp"
-#include "spdlog/common.h"                        // for debug
-#include "spdlog/logger.h"                        // for logger
-#include "spdlog/sinks/ansicolor_sink-inl.h"      // for ansicolor_sink::pri...
-#include "spdlog/sinks/stdout_color_sinks-inl.h"  // for stderr_color_mt
 
 #ifdef SCHEDPOL
 #include <sched.h>
@@ -55,22 +49,18 @@ WorkPacket::WorkPacket() {
 }
 
 void Miner::start(void) {
-  if (verbose) {
-    logger->set_level(spdlog::level::debug);
-  }
-
   if (numThreads == 0) {
     numThreads = std::thread::hardware_concurrency();
-    logger->info("detected {} CPU cores", numThreads);
+    printf("detected %d CPU cores\n", numThreads);
   }
 
   if (num_cpus == 0) {
     num_cpus = numThreads;
   }
 
-  thread gwt(&Miner::getworkThread, this, "getwork()");
+  // thread *gwt = new thread(&Miner::getworkThread, this, "getwork()");
   // start threads
-  logger->info("starting {} threads..", numThreads);
+  printf("starting %d threads\n", numThreads);
   vector<thread *> threads;
   threads.resize(numThreads);
   vector<thread> threadList(numThreads);
@@ -78,13 +68,6 @@ void Miner::start(void) {
     threads[static_cast<int>(i)] = new thread(&Miner::minerThread, this, i + 1);
   }
 
-  logger->info("waiting for getwork to finish");
-  gwt.join();
-  int i = 0;
-  for (auto t : threads) {
-    t->join();
-    logger->info("miner thread {} ended", i + 1);
-    i++;
-  }
-  logger->info("all threads finished");
+  this->getworkThread("getwork()");
+  printf("ended\n");
 }
