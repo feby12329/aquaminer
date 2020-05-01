@@ -45,6 +45,9 @@ CPP_SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 CPP_OBJECTS := $(addprefix $(OBJDIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
 $(info Sources: $(CPP_SOURCES))
 $(info Objects: $(CPP_OBJECTS))
+
+default: bin/$(NAME)-$(VERSION)$(suffix)
+
 bin/$(NAME)-$(VERSION)$(suffix): deps $(CPP_OBJECTS)
 	mkdir -p bin
 	@echo LINKING
@@ -77,7 +80,7 @@ aquahash:
 
 spdlog/libspdlog.a: spdlog
 	$(info building libspdlog.a)
-	cd spdlog && cmake . && make -j2 spdlog CFLAGS=$(CFLAGS)
+	cd spdlog && cmake . && make -j2 spdlog CXXFLAGS=$(CFLAGS)
 
 spdlog: 
 	wget -O spdlog.zip https://github.com/gabime/spdlog/archive/v1.5.0.zip

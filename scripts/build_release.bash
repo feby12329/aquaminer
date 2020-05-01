@@ -6,19 +6,16 @@ cleanall(){
   make -C aquahash clean
   make -C spdlog clean
 }
-cleanall
 
 # build each, copy to folder and clean afterwards
-make -j4 config=plain spdlog/libspdlog.a
-make -j4 config=plain
+cleanall
+make -j4 config=plain deps default
 mv bin/* aquachain-miner/
 cleanall
-make -j4 config=avx spdlog/libspdlog.a
-make -j4 config=avx
+make -j4 config=avx deps default
 mv bin/* aquachain-miner/
 cleanall
-make -j4 config=avx2 spdlog/libspdlog.a
-make -j4 config=avx2
+make -j4 config=avx2 deps default
 mv bin/* aquachain-miner/
 cleanall
 

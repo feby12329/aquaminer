@@ -10,8 +10,6 @@ sudo apt install -y wget tree file
 # build curl lite
 bash ./scripts/setup_libs.bash
 
-# build spdlog 
-make deps
 
 # build 3 binaries (plain, avx, avx2)
 bash ./scripts/build_release.bash
