@@ -21,7 +21,8 @@ if [ -d "$CURLDIR" ]; then
 fi
 # curl config ultralite (no ssl)
 cd ${WD}/deps/curl-7.69.1 && \
-  ./configure --disable-shared --enable-static --prefix=$CURLDIR --disable-ldap --disable-gopher --disable-ftp --disable-pop3 --disable-imap --disable-rtsp --disable-smtp --disable-telnet --disable-tftp --without-ssl --disable-dict --disable-file --without-nghttp2 --enable-ares --disable-netrc
+  ./configure --disable-shared --enable-static --prefix=$CURLDIR --disable-ldap --disable-gopher --disable-ftp --disable-pop3 --disable-imap --disable-rtsp --disable-smtp --disable-telnet --disable-tftp --without-ssl --disable-dict --disable-file --without-nghttp2 --disable-netrc --disable-brotli --disable-idn --disable-psl --without-libidn2 --without-brotli --without-libpsl #--enable-ares
+
 make -j 4
 make install # installs to CURLDIR
 }

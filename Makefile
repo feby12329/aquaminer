@@ -1,3 +1,6 @@
+# Build aquaminer, fetching dependencies as needed
+
+
 NAME := aquachain-miner
 VERSION := $(shell git rev-parse --short HEAD)
 ifeq ($(VERSION),)
@@ -10,11 +13,13 @@ WD := $(PWD)
 # (it has ./bin/curl-config and ./lib/libcurl.a)
 # if depends/curl is used, it will be fetched and compiled
 CURLDIR?=depends/libcurl
+CURLFLAGS ?= $(shell ${CURLDIR}/bin/curl-config --static-libs)
 
 CXXFLAGS := -O3 -std=c++11 -pedantic -Wall -Werror -Iinclude -I. -Iaquahash/include -Ispdlog/include -I${CURLDIR}/include -pthread -static -DVERSION=\""$(VERSION)"\"
 CFLAGS += -O3
 SRCDIR := src
 OBJDIR := _obj
+GMPMD5=e3e08ac185842a882204ba3c37985127
 
 # 'make config=avx2' to build avx2 version
 suffix := -unknown
@@ -36,9 +41,11 @@ $(info Building: $(NAME)-$(VERSION)$(suffix))
 # combine cflags
 ALLFLAGS := $(CFLAGS) $(CXXFLAGS)
 
-# static link aquahash and spdlog (others are installed with apt-get)
-STATICLIBS := spdlog/libspdlog.a aquahash/libaquahash.a
-LDFLAGS+=-ljsoncpp -lgmp $(STATICLIBS) $(shell ${CURLDIR}/bin/curl-config --static-libs) -static -lpthread
+# static link aquahash and spdlog (others are installed with apt-get, or other way)
+STATICLIBS := spdlog/libspdlog.a aquahash/libaquahash.a depends/libgmp/libgmp.a depends/jsoncpp/lib_json/libjsoncpp.a
+LDFLAGS := $(AQUA_LDFLAGS) $(STATICLIBS) $(CURLFLAGS) -static -lpthread 
+$(info LDFLAGS=$(LDFLAGS))
+
 
 CPP_SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 #CPP_OBJECTS := $(CPP_SOURCES:.cpp)
@@ -64,6 +71,28 @@ aquahash/libaquahash.a: aquahash
 	$(info building aquahash: $(CFLAGS))
 	env CFLAGS="$(CFLAGS) -DARGON2_NO_THREADS -DARGON2_NO_SECURE_WIPE" \
 	  OPTTARGET=0 $(MAKE) -C aquahash libaquahash.a
+
+depends/jsoncpp:
+	git clone https://github.com/open-source-parsers/jsoncpp $@
+
+depends/jsoncpp/lib_json/libjsoncpp.a: depends/jsoncpp
+	cd depends/jsoncpp && ./amalgamate.py
+	cd depends/jsoncpp && cmake src
+	cd depends/jsoncpp && ${MAKE}
+
+depends/libgmp/libgmp.a: depends/libgmp
+	cd $< && ./configure && ${MAKE} && cp .libs/libgmp.a .
+deps/gmp-6.2.0.tar.lz:
+	cd deps && wget https://gmplib.org/download/gmp/gmp-6.2.0.tar.lz
+depends/libgmp/: checkchecksum deps/gmp-6.2.0.tar.lz
+	cd depends && tar xaf ../deps/gmp-6.2.0.tar.lz
+	mv depends/gmp-6.2.0 depends/libgmp
+checkchecksum: deps/gmp-6.2.0.tar.lz
+	echo checking checksums
+	cd deps && md5sum -c ../scripts/md5check.sum 
+	echo checksum matched
+
+.PHONY += checkchecksum
 
 include/cli11/CLI11.hpp:
 	$(info fetching CLI11 header)
