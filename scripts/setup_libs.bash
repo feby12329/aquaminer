@@ -1,8 +1,9 @@
 set -e
-CURLDIR=$CURLDIR
-if [ -z "$CURLDIR" ]; then
-  CURLDIR=$PWD/depends/libcurl
+if [ ! -d scripts ]; then
+  echo "this script should be executed from the repository root directory"
+  exit 111
 fi
+CURLDIR=${CURLDIR-$PWD/depends/libcurl}
 WD=`pwd`
 # lets build aquachain-miner (static linked for greatest portability)
 get_curl(){

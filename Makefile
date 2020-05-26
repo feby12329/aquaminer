@@ -97,7 +97,7 @@ distclean:
 	rm -rvf /tmp/curl
 
 
-depends/curl:
+depends/libcurl:
 	bash scripts/setup_libs.bash
 
 debug:
