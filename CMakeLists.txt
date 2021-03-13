@@ -24,18 +24,20 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/aquahash/include)
-include_directories(${CMAKE_SOURCE_DIR}/spdlog/include)
+#include_directories(${CMAKE_SOURCE_DIR}/spdlog/include)
 include_directories(${CMAKE_SOURCE_DIR}/vend/include)
-include_directories(/tmp/curl/include)
+include_directories(${CMAKE_SOURCE_DIR}/depends)
+include_directories(${CMAKE_SOURCE_DIR}/depends/libcurl)
 
 # link libjsoncpp, libgmp, libaquahash, and libspdlog
 target_link_libraries(${PROJECT_NAME} -ljsoncpp)
 target_link_libraries(${PROJECT_NAME} -lgmp)
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/aquahash/libaquahash.a)
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/spdlog/libspdlog.a)
+#target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/spdlog/libspdlog.a)
+#target_link_libraries(${PROJECT_NAME} -lspdlog)
 
 # these are from the output of /tmp/curl/bin/curl-config --static-libs
-target_link_libraries(${PROJECT_NAME} /tmp/curl/lib/libcurl.a -lcares -lz)
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/depends/libcurl/lib/libcurl.a -lcares -lz)
 
 # link pthread last
 target_link_libraries(${PROJECT_NAME} -lpthread)

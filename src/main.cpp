@@ -24,22 +24,22 @@
 #include <stdexcept>        // for invalid_argument, out_of_range
 #include <string>           // for string, operator<<
 
-#include "miner.hpp"                     // for Miner
-#include "spdlog/common.h"               // for debug
-#include "spdlog/details/log_msg-inl.h"  // for log_msg::log_msg
-#include "spdlog/spdlog-inl.h"           // for set_level
-#include "spdlog/spdlog.h"               // for debug
+#include "miner.hpp"                 // for Miner
+#include "spdlog/common.h"           // for debug
+#include "spdlog/details/log_msg.h"  // for log_msg::log_msg
+#include "spdlog/spdlog.h"           // for debug
 
 #ifndef VERSION
-#define VERSION "0.0.0-unknown"
+#define VERSION "\"0.0.0-unknown\""
 #endif
+#define STRING(s) #s
 
 using std::cout;
 using std::endl;
 using std::string;
 
 int main(int argc, char **argv) {
-  const string appname = "Aquachain Miner v" VERSION " (GPLv3)";
+  const string appname = STRING("Aquachain Miner v" + VERSION + " (GPLv3)");
   const string sourcelink = "(Source: https://github.com/aerth/aquaminer)";
   // flag defaults
   string filename = "aquaminer.conf";

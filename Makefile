@@ -15,7 +15,7 @@ WD := $(PWD)
 CURLDIR?=depends/libcurl
 CURLFLAGS ?= $(shell ${CURLDIR}/bin/curl-config --static-libs)
 
-CXXFLAGS := -O3 -std=c++11 -pedantic -Wall -Werror -Iinclude -I. -Iaquahash/include -Ispdlog/include -I${CURLDIR}/include -pthread -static -DVERSION=\""$(VERSION)"\"
+CXXFLAGS := -O3 -std=c++11 -pedantic -Wall -Werror -Iinclude -I. -Iaquahash/include -Ispdlog/include -I${CURLDIR}/include -Idepends -Idepends/jsoncpp/dist/json -pthread -static -DVERSION=\""$(VERSION)"\"
 CFLAGS += -O3
 SRCDIR := src
 OBJDIR := _obj
@@ -53,6 +53,8 @@ CPP_OBJECTS := $(addprefix $(OBJDIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
 $(info Sources: $(CPP_SOURCES))
 $(info Objects: $(CPP_OBJECTS))
 
+help:
+	@echo help
 default: bin/$(NAME)-$(VERSION)$(suffix)
 
 bin/$(NAME)-$(VERSION)$(suffix): deps $(CPP_OBJECTS)
@@ -83,9 +85,11 @@ depends/jsoncpp/lib_json/libjsoncpp.a: depends/jsoncpp
 depends/libgmp/libgmp.a: depends/libgmp
 	cd $< && ./configure && ${MAKE} && cp .libs/libgmp.a .
 deps/gmp-6.2.0.tar.lz:
+	mkdir -p deps
 	cd deps && wget https://gmplib.org/download/gmp/gmp-6.2.0.tar.lz
-depends/libgmp/: checkchecksum deps/gmp-6.2.0.tar.lz
+depends/libgmp: checkchecksum deps/gmp-6.2.0.tar.lz
 	cd depends && tar xaf ../deps/gmp-6.2.0.tar.lz
+	rm -rf depends/libgmp
 	mv depends/gmp-6.2.0 depends/libgmp
 checkchecksum: deps/gmp-6.2.0.tar.lz
 	echo checking checksums

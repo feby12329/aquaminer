@@ -35,12 +35,12 @@
 #include <thread>   // for sleep_for
 #include <utility>  // for move
 
-#include "aqua.hpp"                               // for decodeHex, computeD...
-#include "miner.hpp"                              // for Miner, WorkPacket
-#include "spdlog/details/log_msg-inl.h"           // for log_msg::log_msg
-#include "spdlog/logger.h"                        // for logger
-#include "spdlog/sinks/ansicolor_sink-inl.h"      // for ansicolor_sink::pri...
-#include "spdlog/sinks/stdout_color_sinks-inl.h"  // for stdout_color_mt
+#include "aqua.hpp"                           // for decodeHex, computeD...
+#include "miner.hpp"                          // for Miner, WorkPacket
+#include "spdlog/details/log_msg.h"           // for log_msg::log_msg
+#include "spdlog/logger.h"                    // for logger
+#include "spdlog/sinks/ansicolor_sink.h"      // for ansicolor_sink::pri...
+#include "spdlog/sinks/stdout_color_sinks.h"  // for stdout_color_mt
 
 #ifdef SCHEDPOL
 #define handle_error_en(en, msg) \
@@ -398,7 +398,7 @@ bool submitwork(WorkPacket *work, string endpoint, const bool verbose,
   string rawJson = *httpData.get();
   int rawJsonLength = rawJson.length();
   if (httpCode != 200) {
-    noncelog->error("Pool returned bad status code: {}");
+    noncelog->error("Pool returned bad status code: {}", httpCode);
     if (rawJsonLength != 0) {
       std::cout << "HTTP data was:\n" << rawJson << std::endl;
     }

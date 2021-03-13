@@ -28,12 +28,12 @@
 //#include <utility>  // for move
 #include <vector>  // for vector
 
-#include "aqua.hpp"                               // for mpz_fromBytesNoInit
-#include "miner.hpp"                              // for Miner
-#include "spdlog/common.h"                        // for debug
-#include "spdlog/logger.h"                        // for logger
-#include "spdlog/sinks/ansicolor_sink-inl.h"      // for ansicolor_sink::pri...
-#include "spdlog/sinks/stdout_color_sinks-inl.h"  // for stderr_color_mt
+#include "aqua.hpp"                           // for mpz_fromBytesNoInit
+#include "miner.hpp"                          // for Miner
+#include "spdlog/common.h"                    // for debug
+#include "spdlog/logger.h"                    // for logger
+#include "spdlog/sinks/ansicolor_sink.h"      // for ansicolor_sink::pri...
+#include "spdlog/sinks/stdout_color_sinks.h"  // for stderr_color_mt
 
 #ifdef DEBUG
 #include <iostream>
