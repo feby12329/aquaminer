@@ -53,8 +53,12 @@ CPP_OBJECTS := $(addprefix $(OBJDIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
 $(info Sources: $(CPP_SOURCES))
 $(info Objects: $(CPP_OBJECTS))
 
+
+build/aquachain-miner:
+	mkdir -p build && cd build && cmake .. && make -j 4
 help:
 	@echo help
+
 default: bin/$(NAME)-$(VERSION)$(suffix)
 
 bin/$(NAME)-$(VERSION)$(suffix): deps $(CPP_OBJECTS)
