@@ -16,7 +16,7 @@ addons:
     - build-essential
     - zlib1g-dev
 script:
-- bash .travis.bash
+- bash travis.bash
 before_deploy:
 # Set up git user name and tag this commit
 - git config --local user.name "travis-robot"
