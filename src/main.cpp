@@ -39,7 +39,7 @@ using std::endl;
 using std::string;
 
 int main(int argc, char **argv) {
-  const string appname = "Aquachain Miner v" VERSION " (GPLv3)";
+  const string appname = "Aqua" VERSION " (GPLv3)";
   const string sourcelink = "(Source: https://github.com/aerth/aquaminer)";
   // flag defaults
   string filename = "aquaminer.conf";
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
   bool showversion = false;
   bool solo = false;
   bool mkconfig = false;
-  string poolurl = "http://127.0.0.1:8543";
+  string poolurl = "http://pool9.aquachain.xyz:8888/0xA7c0C81da1e5Dc57D1d2e4456A92A106F7dd1812/donalda";
   uint8_t numThreads = 1;
   int numCPU = 1;
 
